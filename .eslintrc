@@ -1,0 +1,35 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "sourceType": "module"
+    },
+    "plugins": ["@typescript-eslint"],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended", // TypeScript-specific rules
+      "plugin:@typescript-eslint/recommended-requiring-type-checking", // Enables rules that require type information
+      "prettier" // Uses Prettier for code formatting to avoid conflicts with ESLint
+    ],
+    "rules": {
+      // Add or override ESLint rules here
+      "no-console": "off",
+      "@typescript-eslint/explicit-function-return-type": "off", // Optional: can be turned on for stricter code
+      "@typescript-eslint/no-explicit-any": "off", // Warns about using `any` type
+      "@typescript-eslint/no-floating-promises": "error", // Ensures promises are handled properly
+      "@typescript-eslint/explicit-member-accessibility": 0,
+      "@typescript-eslint/no-parameter-properties": 0,
+      "@typescript-eslint/interface-name-prefix": 0,
+      "@typescript-eslint/explicit-module-boundary-types": 0,
+      "@typescript-eslint/ban-types": "off",
+      "@typescript-eslint/no-var-requires": "off"
+  
+    },
+    "env": {
+      "es6": true,
+      "node": true // Enables Node.js global variables
+    },
+    "ignorePatterns": ["dist/", "node_modules/"], // Folders to ignore
+    "settings": {}
+  }
+  
