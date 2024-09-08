@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env nodemon"
   },
-  "author": "Dheeraj2002",
+  "author": "dheeraj2002",
   "license": "ISC",
   "prisma": {
     "schema": "src/prisma/schema.prisma"
@@ -31,6 +31,7 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
+    "jsonwebtoken": "^9.0.2",
     "prisma": "^5.19.1",
     "ts-node": "^10.9.2",
     "tslib": "^2.7.0",

@@ -22,7 +22,6 @@ model User {
   metaData       Json?
   Organisation   Organisation?   @relation(fields: [organisationId], references: [id])
   organisationId String?
-  events         Events[]
   superUserId    String?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
@@ -31,6 +30,7 @@ model User {
 
 model Organisation {
   id        String   @id @default(uuid())
+  name      String
   users     User[]
   email     String
   events    Events[]
@@ -40,14 +40,14 @@ model Organisation {
 
 model Events {
   id             String          @id @default(uuid())
-  name           String          @unique
-  user           User            @relation(fields: [userId], references: [id])
-  userId         String
+  name           String
   organisation   Organisation    @relation(fields: [organisationId], references: [id])
   organisationId String
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   ShootedEvents  ShootedEvents[]
+
+  @@unique([name, organisationId])
 }
 
 model ShootedEvents {
