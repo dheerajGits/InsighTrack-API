@@ -36,6 +36,7 @@ model Organisation {
   events    Events[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Tokens    Tokens[]
 }
 
 model Events {
@@ -56,4 +57,11 @@ model ShootedEvents {
   eventId String
   user    User   @relation(fields: [userId], references: [id])
   userId  String
+}
+
+model Tokens {
+  id             String       @id @default(uuid())
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  organisationId String
+  expiryDate     DateTime     @default(now())
 }
