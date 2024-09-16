@@ -20,7 +20,7 @@ model User {
   email          String?
   traits         Json?
   metaData       Json?
-  Organisation   Organisation?   @relation(fields: [organisationId], references: [id])
+  organisation   Organisation?   @relation(fields: [organisationId], references: [id])
   organisationId String?
   superUserId    String?
   createdAt      DateTime        @default(now())

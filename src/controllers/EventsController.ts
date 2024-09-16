@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
-import { findCompanyId } from "@/utils/mislaneous";
+import { findCompanyId, findCompanyIdByApiToken } from "@/utils/mislaneous";
 import PrismaClient from "../utils/PrismaClient";
 import EventsServices from "@/services/EventsServices";
 
@@ -81,6 +81,45 @@ class EventsController {
       res.status(200).send({ message: "Success", events: eventsShooted });
     } catch (e) {
       res.status(404).send({ message: "Something went wrong" });
+    }
+  };
+
+  public getAnalytics = async (req: Request, res: Response) => {
+    try {
+      const eventList = req.body.eventList;
+      const companyId = await findCompanyId(req, res);
+      if (!eventList) {
+        res.status(400).send({ message: "event name list not send" });
+        return;
+      }
+      const startDateTime = req.query.startDateTime as string;
+      const endDateTime = req.query.endDateTime as string;
+      let filter = [];
+      if (startDateTime) {
+        filter = [
+          ...filter,
+          {
+            startDateTime: new Date(startDateTime),
+          },
+        ];
+      }
+      if (endDateTime) {
+        filter = [
+          ...filter,
+          {
+            endDateTime: new Date(endDateTime),
+          },
+        ];
+      }
+      const analytics = await this.eventsServices.findAnalytics(
+        eventList,
+        companyId,
+        filter
+      );
+      res.status(200).send({ data: analytics, message: "Success" });
+      console.log("[Computed analytics successfully]");
+    } catch (e) {
+      console.log();
     }
   };
 }

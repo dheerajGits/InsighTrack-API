@@ -69,5 +69,43 @@ class EventsServices {
     });
     return shootedEvents;
   };
+
+  public findAnalytics = async (
+    eventsNameList: string[],
+    organisationId: string,
+    filter: any
+  ) => {
+    let analytics;
+    Promise.all(
+      eventsNameList.map(async (eventName: string) => {
+        const { id: eventId } = await this.events.findUnique({
+          where: {
+            name_organisationId: {
+              name: eventName,
+              organisationId: organisationId,
+            },
+          },
+          select: {
+            id: true,
+          },
+        });
+        const shootedNumber = await this.eventsShooted.count({
+          where: {
+            AND: [
+              {
+                eventId: eventId,
+              },
+              ...filter,
+            ],
+          },
+        });
+        analytics.push({
+          eventName: eventName,
+          count: shootedNumber,
+        });
+      })
+    );
+    return analytics;
+  };
 }
 export default EventsServices;

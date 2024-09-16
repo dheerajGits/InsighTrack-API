@@ -39,4 +39,53 @@ const findCompanyIdByApiToken = async (req: Request, res: Response) => {
     return null;
   }
 };
-export { findCompanyId };
+
+const findDataFromUserTraits = (data: any) => {
+  // to get name
+  let userName = "";
+  let userData = {};
+  Object.keys(data).forEach((key: string) => {
+    if (key.toLowerCase() == "name") {
+      userName = data[`${key}`];
+    }
+    if (key.toLowerCase() == "firstname" || key.toLowerCase() == "lastName") {
+      userName += data[`${key}`];
+    }
+  });
+  let email = "";
+  Object.keys(data).forEach((key: string) => {
+    if (key.toLowerCase() == "email" || key.toLowerCase() == "mail") {
+      userName = data[`${key}`];
+    }
+  });
+  let phoneNo = "";
+  Object.keys(data).forEach((key: string) => {
+    if (
+      key.toLowerCase() == "phone" ||
+      key.toLowerCase() == "phoneNo" ||
+      key.toLowerCase() == "phonenumber"
+    ) {
+      userName = data[`${key}`];
+    }
+    if (
+      key.toLowerCase() == "no" ||
+      key.toLowerCase() == "number" ||
+      key.toLowerCase() == "num"
+    ) {
+      if (data[`${key}`].length() >= 10 && data[`${key}`].length() <= 13) {
+        phoneNo = data[`${key}`];
+      }
+    }
+  });
+  if (userName) {
+    userData = { ...userData, name: userName };
+  }
+  if (email) {
+    userData = { ...userData, email: email };
+  }
+  if (phoneNo) {
+    userData = { ...userData, phoneNo: phoneNo };
+  }
+  return userData;
+};
+export { findCompanyId, findCompanyIdByApiToken, findDataFromUserTraits };

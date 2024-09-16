@@ -14,5 +14,10 @@ class EventsRoutes {
       authMiddleware,
       this.eventController.getShootedEvents
     );
+    this.router.get(
+      "/analytics",
+      authMiddleware,
+      this.eventController.getAnalytics
+    );
   }
 }
