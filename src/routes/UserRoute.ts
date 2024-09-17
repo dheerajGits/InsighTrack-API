@@ -8,7 +8,6 @@ class UserRoutes {
   public route = "/users";
   public userController = new UserController();
   constructor() {
-    console.log("Initializing User Routes");
     this.initializeRoutes();
   }
   public initializeRoutes() {
@@ -18,9 +17,19 @@ class UserRoutes {
       this.userController.getUser
     );
     this.router.post(
-      `${this.route}/create`,
+      `${this.route}/api/create`,
       authAndValidityMiddleware,
       this.userController.createUserByCompany
+    );
+    this.router.put(
+      `${this.router}/api/alias`,
+      authAndValidityMiddleware,
+      this.userController.changeUserIdToAlias
+    );
+    this.router.put(
+      `${this.route}/api/set-super-parent`,
+      authAndValidityMiddleware,
+      this.userController.setSuperUserToUser
     );
   }
 }

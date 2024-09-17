@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import { Router, Request, Response } from "express";
 import express from "express";
 import http from "http";
 import cors from "cors";
@@ -26,6 +27,13 @@ class App {
     this.app.use(cors());
   }
   public initializeRoutes(Routes: any) {
+    const router = Router();
+    this.app.use(
+      "/",
+      router.get("/", (req: Request, res: Response) => {
+        res.status(200).send("OK");
+      })
+    );
     Routes.map((Route: any) => {
       this.app.use("/", Route.router);
     });

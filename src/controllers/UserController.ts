@@ -62,5 +62,46 @@ class UserController {
       res.status(400).send({ message: "something went wrong" });
     }
   };
+  public setSuperUserToUser = async (req: Request, res: Response) => {
+    try {
+      const body = req.body;
+      const { userId, parentId } = body;
+      if (!userId || !parentId) {
+        res.status(400).send({ message: "userId or parentId not specified" });
+        return;
+      }
+      const companyId = await findCompanyIdByApiToken(req, res);
+      const updatedUserData = await this.userServices.setSuperUserToUser(
+        companyId,
+        userId,
+        parentId
+      );
+      res.status(200).send({ message: "success", data: updatedUserData });
+    } catch {
+      res.status(400).send({ message: "something went wrong" });
+    }
+  };
+
+  public changeUserIdToAlias = async (req: Request, res: Response) => {
+    try {
+      const { aliasId, userId } = req.body;
+      if (!aliasId || !userId) {
+        res
+          .status(400)
+          .send({ message: "Either aliasId or userId not specified" });
+        return;
+      }
+      const data = await this.userServices.changeUserIdOfUser(userId, aliasId);
+      if (data.message == "success") {
+        res
+          .status(200)
+          .send({ updatedUser: data.userData, message: "Success" });
+        return;
+      }
+      res.status(400).send({ message: data.message });
+    } catch (e) {
+      res.status(400).send({ message: "something went wrong" });
+    }
+  };
 }
 export default UserController;

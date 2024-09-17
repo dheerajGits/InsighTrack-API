@@ -31,5 +31,56 @@ class UserServices {
       },
     });
   };
+  public setSuperUserToUser = async (
+    organisationId: string,
+    userId: string,
+    parentId: string
+  ) => {
+    const user = await this.users.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        superUserId: parentId,
+      },
+    });
+    return user;
+  };
+  public changeUserIdOfUser = async (userId: string, aliasId: string) => {
+    const user = await this.users.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user) {
+      return {
+        userData: null,
+        message: "User with the specified userId not found",
+      };
+    }
+    const aliasUser = await this.users.findUnique({
+      where: {
+        id: aliasId,
+      },
+    });
+    if (aliasUser) {
+      return {
+        userData: null,
+        message: "User with the specified aliasId already present",
+      };
+    }
+    const updateUserData = await this.users.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        id: aliasId,
+      },
+    });
+    return {
+      userData: updateUserData,
+      message: "Success",
+    };
+  };
 }
 export default UserServices;
