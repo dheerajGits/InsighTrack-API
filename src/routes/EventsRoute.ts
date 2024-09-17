@@ -1,5 +1,6 @@
 import EventsController from "@/controllers/EventsController";
 import authMiddleware from "@/middlewares/AuthMiddleware";
+import authAndValidityMiddleware from "@/middlewares/AuthAndValidityMiddleware";
 import { Router } from "express";
 
 class EventsRoutes {
@@ -24,6 +25,11 @@ class EventsRoutes {
       `${this.route}/analytics`,
       authMiddleware,
       this.eventController.getAnalytics
+    );
+    this.router.post(
+      `${this.router}/api/track`,
+      authAndValidityMiddleware,
+      this.eventController.shootEvent
     );
   }
 }

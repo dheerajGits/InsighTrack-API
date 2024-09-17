@@ -56,6 +56,7 @@ model ShootedEvents {
   event   Events @relation(fields: [eventId], references: [id])
   eventId String
   user    User   @relation(fields: [userId], references: [id])
+  traits  Json?
   userId  String
 }
 

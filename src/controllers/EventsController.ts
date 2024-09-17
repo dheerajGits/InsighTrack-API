@@ -86,7 +86,7 @@ class EventsController {
 
   public getAnalytics = async (req: Request, res: Response) => {
     try {
-      const eventList = req.body.eventList;
+      const eventList = req.body.eventListData;
       const companyId = await findCompanyId(req, res);
       if (!eventList) {
         res.status(400).send({ message: "event name list not send" });
@@ -120,6 +120,26 @@ class EventsController {
       console.log("[Computed analytics successfully]");
     } catch (e) {
       console.log();
+    }
+  };
+
+  public shootEvent = async (req: Request, res: Response) => {
+    try {
+      const { eventData, eventName, userId } = req.body;
+      const companyId = await findCompanyIdByApiToken(req, res);
+      if (!eventName) {
+        res.status(400).send({ message: "event name not given" });
+        return;
+      }
+      const event = await this.eventsServices.shootEvent(
+        eventData,
+        eventName,
+        companyId,
+        userId
+      );
+      res.status(200).send({ message: "success", data: event });
+    } catch {
+      res.status(400).send({ message: "Something went wrong" });
     }
   };
 }
