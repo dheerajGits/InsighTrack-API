@@ -4,20 +4,27 @@ import { Router } from "express";
 
 class EventsRoutes {
   public router = Router();
-  public route = "/event";
+  public route = "/events";
   public eventController = new EventsController();
-  constructor() {}
+  constructor() {
+    this.initializeRoutes();
+  }
   public initializeRoutes() {
-    this.router.get("/", authMiddleware, this.eventController.getEvents);
     this.router.get(
-      "/shooted",
+      `${this.route}/`,
+      authMiddleware,
+      this.eventController.getEvents
+    );
+    this.router.get(
+      `${this.route}/shooted`,
       authMiddleware,
       this.eventController.getShootedEvents
     );
     this.router.get(
-      "/analytics",
+      `${this.route}/analytics`,
       authMiddleware,
       this.eventController.getAnalytics
     );
   }
 }
+export default EventsRoutes;

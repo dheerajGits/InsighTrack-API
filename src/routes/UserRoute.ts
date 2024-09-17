@@ -3,17 +3,25 @@ import authMiddleware from "@/middlewares/AuthMiddleware";
 import authAndValidityMiddleware from "@/middlewares/AuthAndValidityMiddleware";
 import { Router } from "express";
 
-class EventsRoutes {
+class UserRoutes {
   public router = Router();
   public route = "/users";
   public userController = new UserController();
-  constructor() {}
+  constructor() {
+    console.log("Initializing User Routes");
+    this.initializeRoutes();
+  }
   public initializeRoutes() {
-    this.router.get("/", authMiddleware, this.userController.getUser);
+    this.router.get(
+      `${this.route}/`,
+      authMiddleware,
+      this.userController.getUser
+    );
     this.router.post(
-      "/create",
+      `${this.route}/create`,
       authAndValidityMiddleware,
       this.userController.createUserByCompany
     );
   }
 }
+export default UserRoutes;
