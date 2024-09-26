@@ -180,6 +180,25 @@ class EventsServices {
     });
     return event;
   };
+  public getEventIdsFromNameList = async (
+    eventNameLists: string[],
+    organisationId: string
+  ) => {
+    let eventIds = await this.events.findMany({
+      where: {
+        id: {
+          in: eventNameLists,
+        },
+        organisationId: {
+          equals: organisationId,
+        },
+      },
+    });
+    eventIds = eventIds.map((eventInfo: any) => {
+      return eventInfo.id;
+    });
+    return eventIds;
+  };
 }
 
 export default EventsServices;

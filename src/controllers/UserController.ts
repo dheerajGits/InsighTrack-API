@@ -4,30 +4,60 @@ import { verify } from "jsonwebtoken";
 import { findCompanyId, findCompanyIdByApiToken } from "@/utils/mislaneous";
 import PrismaClient from "../utils/PrismaClient";
 import UserServices from "@/services/UserServices";
+import EventsServices from "@/services/EventsServices";
 
 class UserController {
   public userServices = new UserServices();
+  public eventsServices = new EventsServices();
 
   public getUser = async (req: Request, res: Response) => {
     try {
-      let filter = {};
+      console.log(JSON.parse(req.query.filter as string));
+      const reqFilter = JSON.parse(req.query.filter as string);
+      let filter = [];
       const pageNo = Number(req.query.page as string) || 1;
       const perPage = Number(req.query.take as string) || 20;
-      const startDateTime = req.query.startDate as string;
-      const endDateTime = req.query.startDate as string;
-      if (startDateTime) {
-        filter = {
-          ...filter,
-          startDateTime: new Date(startDateTime as string),
-        };
-      }
-      if (endDateTime) {
-        filter = {
-          ...filter,
-          endDateTime: new Date(endDateTime as string),
-        };
-      }
       const companyId = await findCompanyId(req, res);
+      if (reqFilter) {
+        reqFilter.forEach(async (element: any) => {
+          if (element?.name) {
+            if (element.name == "joinedAt") {
+              filter.push({
+                createdAt: {
+                  gte: element.startDateTime,
+                  lte: element.endDateTime,
+                },
+              });
+            }
+            if (element.name == "lastSeen") {
+              filter.push((element: any) => {
+                filter.push({
+                  updatedAt: {
+                    gte: element.startDateTime,
+                    lte: element.endDateTime,
+                  },
+                });
+              });
+            }
+            if (element.name == "event") {
+              const eventIds =
+                await this.eventsServices.getEventIdsFromNameList(
+                  element.eventList,
+                  companyId
+                );
+              filter.push({
+                events: {
+                  id: {
+                    some: {
+                      in: eventIds,
+                    },
+                  },
+                },
+              });
+            }
+          }
+        });
+      }
       if (!companyId) {
         res.status(403).send({ message: "Invalid Token" });
         return;
