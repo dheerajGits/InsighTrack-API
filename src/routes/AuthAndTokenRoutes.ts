@@ -3,7 +3,7 @@ import authAndValidityMiddleware from "@/middlewares/AuthAndValidityMiddleware";
 import { Router } from "express";
 import AuthAndTokenController from "@/controllers/AuthAndTokenController";
 
-class EventsRoutes {
+class AuthAndTokenRoutes {
   public router = Router();
   public path = "/auth";
   public authAndTokenController = new AuthAndTokenController();
@@ -30,4 +30,4 @@ class EventsRoutes {
     );
   }
 }
-export default EventsRoutes;
+export default AuthAndTokenRoutes;
