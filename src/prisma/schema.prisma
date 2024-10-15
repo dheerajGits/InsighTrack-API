@@ -64,5 +64,5 @@ model Tokens {
   id             String       @id @default(uuid())
   organisation   Organisation @relation(fields: [organisationId], references: [id])
   organisationId String
-  expiryDate     DateTime     @default(now())
+  expiryDate     DateTime
 }
