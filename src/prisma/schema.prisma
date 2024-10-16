@@ -28,15 +28,26 @@ model User {
   ShootedEvents  ShootedEvents[]
 }
 
+model AuthorisedUser {
+  id           String         @id @default(uuid())
+  name         String
+  email        String         @unique
+  phone        String?
+  organisation Organisation[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
 model Organisation {
-  id        String   @id @default(uuid())
-  name      String
-  users     User[]
-  email     String
-  events    Events[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Tokens    Tokens[]
+  id              String           @id @default(uuid())
+  name            String
+  users           User[]
+  email           String           @unique
+  events          Events[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  Tokens          Tokens[]
+  authorisedUsers AuthorisedUser[]
 }
 
 model Events {

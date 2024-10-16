@@ -5,6 +5,7 @@ class UserServices {
   public events = PrismaClient.events;
   public eventsShooted = PrismaClient.shootedEvents;
   public users = PrismaClient.user;
+  public authorisedUser = PrismaClient.authorisedUser;
   public findUserByCompany = async (organisationId: string, filter: any) => {
     const users = await this.users.findMany({
       where: {
@@ -81,6 +82,23 @@ class UserServices {
       userData: updateUserData,
       message: "Success",
     };
+  };
+  public createAuthorisedUser = async (name: string, email: string) => {
+    const authorisedUser = await this.authorisedUser.create({
+      data: {
+        name,
+        email,
+      },
+    });
+    return authorisedUser;
+  };
+  public getUserById = async (userId: string) => {
+    const userDetails = await this.users.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    return userDetails;
   };
 }
 export default UserServices;

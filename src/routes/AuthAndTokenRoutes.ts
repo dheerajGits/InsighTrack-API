@@ -17,6 +17,7 @@ class AuthAndTokenRoutes {
     );
     this.router.put(
       `${this.path}/token/validity`,
+      authMiddleware,
       this.authAndTokenController.updateTokenValidity
     );
     this.router.post(
